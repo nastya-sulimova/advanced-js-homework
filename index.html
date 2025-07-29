@@ -9,7 +9,7 @@
   <body>
     <div class="container">
       <ul class="comments">
-        <li class="comment">
+        <!-- <li class="comment">
           <div class="comment-header">
             <div>Глеб Фокин</div>
             <div>12.02.22 12:18</div>
@@ -42,7 +42,7 @@
               <button class="like-button -active-like"></button>
             </div>
           </div>
-        </li>
+        </li> -->
       </ul>
       <div class="add-form">
         <input
@@ -81,6 +81,49 @@
   const listEl = document.querySelector('.comments');
   const fieldNameEl = document.querySelector('.add-form-name');
   const fieldTextEl = document.querySelector('.add-form-text');
+
+  const comments = [
+    {name: 'Глеб Фокин', date: '12.02.22 12:18', text: 'Это будет первый комментарий на этой странице', counter: 3, isLiked: false},
+    {name: 'Варвара Н.', date: '13.02.22 19:22', text: 'Мне нравится как оформлена эта страница! ❤', counter: 75, isLiked: true},
+  ];
+
+  function renderComments(comments) {
+    const commentsContiner = document.querySelector('.comments');
+
+    commentsContiner.innerHTML = comments.map((comment, index)=>`
+    <li class="comment">
+          <div class="comment-header">
+            <div>${comment.name}</div>
+            <div>${comment.date}</div>
+          </div>
+          <div class="comment-body">
+            <div class="comment-text">
+              ${comment.text}
+            </div>
+          </div>
+          <div class="comment-footer">
+            <div class="likes">
+              <span class="likes-counter">${comment.counter}</span>
+              <button class="like-button ${comment.isLiked? '-active-like': ''} data-index='${index}'"></button>
+            </div>
+          </div>
+        </li>
+    `).join('');
+
+    const likeButtonsEl = document.querySelectorAll('.like-button');
+
+    likeButtonsEl.forEach(likebutton=>{
+      likebutton.addEventListener('click', ()=>{
+        const index = likebutton.dataset.index;
+        comments[index].isLiked = !comments[index].isLiked;
+
+      }
+    )
+    })
+  }
+
+  renderComments(comments);
+
   
   fieldNameEl.addEventListener('input', ()=>{
     fieldNameEl.classList.add('border-color');
@@ -134,6 +177,20 @@
     fieldNameEl.value='';
     fieldTextEl.value='';
   })
+
+  // наверное сюда леплю обработчик на кнопку лайка с изменением состояния (булевое использовать по классу) и счетчик (хз какой там цикл)
+  // и уже в конце функции внутри еще раз вызываю рендер комментариев для новой отрисовки массива
+
+    // const likeButtonsEl = document.querySelectorAll('.like-button');
+
+    // likeButtonsEl.forEach(likebutton=>{
+    //   likebutton.addEventListener('click', ()=>{
+    //     const index = likebutton.dataset.index;
+    //     comments[index].isLiked = !comments[index].isLiked;
+    //   }
+    // )
+    // renderComments(comments);
+    // })
     </script>
 
   </body>
