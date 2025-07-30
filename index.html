@@ -104,7 +104,7 @@
           <div class="comment-footer">
             <div class="likes">
               <span class="likes-counter">${comment.counter}</span>
-              <button class="like-button ${comment.isLiked? '-active-like': ''} data-index='${index}'"></button>
+              <button class="like-button ${comment.isLiked? '-active-like': ''}" data-index='${index}'></button>
             </div>
           </div>
         </li>
@@ -116,6 +116,8 @@
       likebutton.addEventListener('click', ()=>{
         const index = likebutton.dataset.index;
         comments[index].isLiked = !comments[index].isLiked;
+
+        renderComments(comments);
 
       }
     )
@@ -175,10 +177,22 @@
     fieldTextEl.classList.remove('border-color');
     fieldNameEl.value='';
     fieldTextEl.value='';
+
+
+    // const likeButtonsEl = document.querySelectorAll('.like-button');
+
+    // likeButtonsEl.forEach(likebutton=>{
+    //   likebutton.addEventListener('click', ()=>{
+    //     const index = likebutton.dataset.index;
+    //     comments[index].isLiked = !comments[index].isLiked;
+
+    //     renderComments(comments);
+
+    //   }
+    // )
+    // })
   })
 
-  // наверное сюда леплю обработчик на кнопку лайка с изменением состояния (булевое использовать по классу) и счетчик (хз какой там цикл)
-  // и уже в конце функции внутри еще раз вызываю рендер комментариев для новой отрисовки массива
 
     // const likeButtonsEl = document.querySelectorAll('.like-button');
 
