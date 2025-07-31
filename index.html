@@ -9,40 +9,7 @@
   <body>
     <div class="container">   
       <ul class="comments">
-        <li class="comment">
-          <div class="comment-header">
-            <div>Глеб Фокин</div>
-            <div>12.02.22 12:18</div>
-          </div>
-          <div class="comment-body">
-            <div class="comment-text">
-              Это будет первый комментарий на этой странице
-            </div>
-          </div>
-          <div class="comment-footer">
-            <div class="likes">
-              <span class="likes-counter">3</span>
-              <button class="like-button"></button>
-            </div>
-          </div>
-        </li>
-        <li class="comment">
-          <div class="comment-header">
-            <div>Варвара Н.</div>
-            <div>13.02.22 19:22</div>
-          </div>
-          <div class="comment-body">
-            <div class="comment-text">
-              Мне нравится как оформлена эта страница! ❤
-            </div>
-          </div>
-          <div class="comment-footer">
-            <div class="likes">
-              <span class="likes-counter">75</span>
-              <button class="like-button -active-like"></button>
-            </div>
-          </div>
-        </li>
+        
       </ul>
       <div class="add-form">
         <input
@@ -81,6 +48,50 @@
   const listEl = document.querySelector('.comments');
   const fieldNameEl = document.querySelector('.add-form-name');
   const fieldTextEl = document.querySelector('.add-form-text');
+
+  const comments = [
+    {name: 'Глеб Фокин', date: '12.02.22 12:18', text: 'Это будет первый комментарий на этой странице', counter: 3, isLiked: false},
+    {name: 'Варвара Н.', date: '13.02.22 19:22', text: 'Мне нравится как оформлена эта страница! ❤', counter: 75, isLiked: true},
+  ];
+
+  function renderComments(comments) {
+    const commentsContiner = document.querySelector('.comments');
+
+    commentsContiner.innerHTML = comments.map((comment, index)=>`
+    <li class="comment">
+          <div class="comment-header">
+            <div>${comment.name}</div>
+            <div>${comment.date}</div>
+          </div>
+          <div class="comment-body">
+            <div class="comment-text">
+              ${comment.text}
+            </div>
+          </div>
+          <div class="comment-footer">
+            <div class="likes">
+              <span class="likes-counter">${comment.counter}</span>
+              <button class="like-button ${comment.isLiked? '-active-like': ''}" data-index='${index}'></button>
+            </div>
+          </div>
+        </li>
+    `).join('');
+
+    const likeButtonsEl = document.querySelectorAll('.like-button');
+
+    likeButtonsEl.forEach(likebutton=>{
+      likebutton.addEventListener('click', ()=>{
+        const index = likebutton.dataset.index;
+        comments[index].isLiked = !comments[index].isLiked;
+
+        comments[index].isLiked? comments[index].counter++: comments[index].counter--;
+
+        renderComments(comments);
+      })
+    })
+  }
+  renderComments(comments);
+
   
   fieldNameEl.addEventListener('input', ()=>{
     fieldNameEl.classList.add('border-color');
@@ -98,42 +109,31 @@
 
     fieldNameEl.classList.remove('error') || fieldTextEl.classList.remove('error');
 
-    const newReview = `
-    <li class="comment">
-          <div class="comment-header">
-            <div>${fieldNameEl.value}</div>
-            <div>${(() => {
-              const date = new Date();
-              const day = String(date.getDate()).padStart(2, '0');
-              const month = String(date.getMonth() + 1).padStart(2, '0');
-              const year = String(date.getFullYear()).slice(-2);
-              const hours = String(date.getHours()).padStart(2, '0');
-              const minutes = String(date.getMinutes()).padStart(2, '0');
+    const date = new Date();
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = String(date.getFullYear()).slice(-2);
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
 
-              return `${day}.${month}.${year} ${hours}:${minutes}`;
-          })()}</div>
-          </div>
-          <div class="comment-body">
-            <div class="comment-text">
-              ${fieldTextEl.value}
-            </div>
-          </div>
-          <div class="comment-footer">
-            <div class="likes">
-              <span class="likes-counter">0</span>
-              <button class="like-button"></button>
-            </div>
-          </div>
-        </li>
-    `;
+    const newReview = {
+      name: fieldNameEl.value, 
+      date: `${day}.${month}.${year} ${hours}:${minutes}`, 
+      text: fieldTextEl.value, 
+      counter: 0, 
+      isLiked: false
+    };
 
-    listEl.innerHTML+=newReview;
+    comments.push(newReview);
+
+    renderComments(comments);
 
     fieldNameEl.classList.remove('border-color');
     fieldTextEl.classList.remove('border-color');
     fieldNameEl.value='';
     fieldTextEl.value='';
   })
+
     </script>
 
   </body>
