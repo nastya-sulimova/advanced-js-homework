@@ -87,7 +87,7 @@
     commentsContiner.innerHTML = comments.map((comment, index)=>`
     <li class="comment" data-commentindex='${index}'>
           <div class="comment-header">
-            <div>${comment.name}</div>
+            <div class="comment-header__name">${comment.name}</div>
             <div>${comment.date}</div>
           </div>
           <div class="comment-body">
@@ -106,16 +106,23 @@
 
 
     
-    comments.forEach((comment, index)=>{
-      comment.addEventListener('click', (event)=>{
-        const commentindex = comment.dataset.commentindex;
-        const replyAddform = {fieldname: `placeholder="Введите ваше имя"`, fieldtext: `EventTarget.${comments[commentindex].name} ${comments[commentindex].text}` `placeholder="Введите ваш коментарий"`, fieldbutton: 'Написать'};
+    
+      commentsContiner.addEventListener('click', (event)=>{
+        const commentEl = event.target.closest('.comment');
+        const nameReplayed = commentEl.querySelector('.comment-header__name').textContent;
+        const textReplayed = commentEl.querySelector('.comment-text').textContent;
 
-        addformContiner = replyAddform;
+        // addform.fieldname.value = placeholder="Введите ваше имя";
+        fieldTextEl.value = `${nameReplayed}, ${textReplayed} placeholder="Введите ваш коментарий"`;
+
+        // const addformContiner = {fieldname: `placeholder="Введите ваше имя"`, fieldtext: `${nameReplayed}, ${textReplayed} placeholder="Введите ваш коментарий"`, fieldbutton: 'Написать'};
+
+        // const replyAddform = {fieldname: `placeholder="Введите ваше имя"`, fieldtext: `nameReplayed, textReplayed placeholder="Введите ваш коментарий"`, fieldbutton: 'Написать'};
+
+        // addformContiner = replyAddform;
         renderAddform(addform);
         
-      })
-    });
+      });
 
     const likeButtonsEl = document.querySelectorAll('.like-button');
 
