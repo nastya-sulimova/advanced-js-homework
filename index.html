@@ -11,6 +11,7 @@
       <ul class="comments">
         
       </ul>
+
       <div class="add-form">
         <input
           type="text"
@@ -44,28 +45,43 @@
     <script>
       "use strict";
       // Код писать здесь
-  const addButtonEl = document.querySelector('.add-form-button');
   const listEl = document.querySelector('.comments');
-  const fieldNameEl = document.querySelector('.add-form-name');
-  const fieldTextEl = document.querySelector('.add-form-text');
+  const addformContiner = document.querySelector('.add-form');
 
   const comments = [
     {name: 'Глеб Фокин', date: '12.02.22 12:18', text: 'Это будет первый комментарий на этой странице', counter: 3, isLiked: false},
     {name: 'Варвара Н.', date: '13.02.22 19:22', text: 'Мне нравится как оформлена эта страница! ❤', counter: 75, isLiked: true},
   ];
 
-  function renderComments(comments) {
-    const commentsContiner = document.querySelector('.comments');
+  const addform = {fieldname: `placeholder="Введите ваше имя"`, fieldtext: `placeholder="Введите ваш коментарий"`, fieldbutton: 'Написать'};
 
-    commentsContiner.innerHTML = comments.map((comment, index)=>`
-    <li class="comment">
-          <div class="comment-header">
-            <div>${comment.name}</div>
+  const fieldNameEl = document.querySelector('.add-form-name');
+  const fieldTextEl = document.querySelector('.add-form-text');
+  const addButtonEl = document.querySelector('.add-form-button');
+
+  function protectData(input) {
+    return input
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('&', '&amp;')
+      .replaceAll('"', '&quot;')
+  }
+
+
+  function renderComments(comments) {
+    listEl.innerHTML='';
+
+    comments.map((comment, index)=>{
+      const commentEl = document.createElement('li')
+      commentEl.classList.add('comment')
+
+      commentEl.innerHTML=`<div class="comment-header">
+            <div class="comment-header__name">${protectData(comment.name)}</div>
             <div>${comment.date}</div>
           </div>
           <div class="comment-body">
             <div class="comment-text">
-              ${comment.text}
+              ${protectData(comment.text)}
             </div>
           </div>
           <div class="comment-footer">
@@ -73,18 +89,28 @@
               <span class="likes-counter">${comment.counter}</span>
               <button class="like-button ${comment.isLiked? '-active-like': ''}" data-index='${index}'></button>
             </div>
-          </div>
-        </li>
-    `).join('');
+          </div>`
+
+
+          commentEl.addEventListener('click', ()=>{
+            const quote = `Ответ на комментарий "${comment.text}" от ${comment.name}: \n`;
+            fieldTextEl.value = quote;
+
+          })
+          listEl.appendChild(commentEl);
+    });
+
 
     const likeButtonsEl = document.querySelectorAll('.like-button');
 
     likeButtonsEl.forEach(likebutton=>{
-      likebutton.addEventListener('click', ()=>{
+      likebutton.addEventListener('click', (event)=>{
+        event.stopPropagation();
         const index = likebutton.dataset.index;
         comments[index].isLiked = !comments[index].isLiked;
 
         comments[index].isLiked? comments[index].counter++: comments[index].counter--;
+
 
         renderComments(comments);
       })
@@ -92,7 +118,6 @@
   }
   renderComments(comments);
 
-  
   fieldNameEl.addEventListener('input', ()=>{
     fieldNameEl.classList.add('border-color');
   })
