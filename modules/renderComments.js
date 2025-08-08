@@ -1,9 +1,9 @@
-// import { comments } from './comments.js';
+import { comments } from './comments.js';
 import { listEl } from './constants.js'
-import { protectData } from './protectData.js'
 import { fieldTextEl } from './constants.js'
+import { addInitLikesListeners } from './addEventListeners.js';
 
-export const renderComments = (comments) => {
+export const renderComments = () => {
     listEl.innerHTML = ''
 
     comments.map((comment, index) => {
@@ -11,12 +11,12 @@ export const renderComments = (comments) => {
         commentEl.classList.add('comment')
 
         commentEl.innerHTML = `<div class="comment-header">
-              <div class="comment-header__name">${protectData(comment.name)}</div>
+              <div class="comment-header__name">${comment.name}</div>
               <div>${comment.date}</div>
             </div>
             <div class="comment-body">
               <div class="comment-text">
-                ${protectData(comment.text)}
+                ${comment.text}
               </div>
             </div>
             <div class="comment-footer">
@@ -35,19 +35,5 @@ export const renderComments = (comments) => {
         listEl.appendChild(commentEl)
     })
 
-    const likeButtonsEl = document.querySelectorAll('.like-button')
-
-    likeButtonsEl.forEach((likebutton) => {
-        likebutton.addEventListener('click', (event) => {
-            event.stopPropagation()
-            const index = likebutton.dataset.index
-            comments[index].isLiked = !comments[index].isLiked
-
-            comments[index].isLiked
-                ? comments[index].counter++
-                : comments[index].counter--
-
-            renderComments(comments)
-        })
-    })
+    addInitLikesListeners()
 }

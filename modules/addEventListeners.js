@@ -3,6 +3,25 @@ import { fieldTextEl } from './constants.js'
 import { addButtonEl } from './constants.js'
 import { comments } from './comments.js'
 import { renderComments } from './renderComments.js'
+import { protectData } from './protectData.js'
+
+export const addInitLikesListeners = () => {
+    const likeButtonsEl = document.querySelectorAll('.like-button')
+
+    likeButtonsEl.forEach((likebutton) => {
+        likebutton.addEventListener('click', (event) => {
+            event.stopPropagation()
+            const index = likebutton.dataset.index
+            comments[index].isLiked = !comments[index].isLiked
+
+            comments[index].isLiked
+                ? comments[index].counter++
+                : comments[index].counter--
+
+            renderComments(comments)
+        })
+    })
+}
 
 export const clickOnFieldName = () => {
     fieldNameEl.addEventListener('input', () => {
@@ -35,9 +54,9 @@ export const addButton = () => {
         const minutes = String(date.getMinutes()).padStart(2, '0')
 
         const newReview = {
-            name: fieldNameEl.value,
+            name: `${protectData(fieldNameEl.value)}`,
             date: `${day}.${month}.${year} ${hours}:${minutes}`,
-            text: fieldTextEl.value,
+            text: `${protectData(fieldTextEl.value)}`,
             counter: 0,
             isLiked: false,
         }
