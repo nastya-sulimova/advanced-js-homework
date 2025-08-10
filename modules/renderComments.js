@@ -1,7 +1,7 @@
 import { comments } from './comments.js';
 import { listEl } from './constants.js'
-import { fieldTextEl } from './constants.js'
 import { addInitLikesListeners } from './addEventListeners.js';
+import { addInitQuoteListeners } from './addEventListeners.js';
 
 export const renderComments = () => {
     listEl.innerHTML = ''
@@ -11,11 +11,11 @@ export const renderComments = () => {
         commentEl.classList.add('comment')
 
         commentEl.innerHTML = `<div class="comment-header">
-              <div class="comment-header__name">${comment.name}</div>
+              <div class="comment-header__name" data-name='${index}'>${comment.name}</div>
               <div>${comment.date}</div>
             </div>
             <div class="comment-body">
-              <div class="comment-text">
+              <div class="comment-text" data-text='${index}'>
                 ${comment.text}
               </div>
             </div>
@@ -28,12 +28,9 @@ export const renderComments = () => {
               </div>
             </div>`
 
-        commentEl.addEventListener('click', () => {
-            const quote = `Ответ на комментарий "${comment.text}" от ${comment.name}: \n`
-            fieldTextEl.value = quote
-        })
         listEl.appendChild(commentEl)
     })
-
+    
     addInitLikesListeners()
+    addInitQuoteListeners()
 }

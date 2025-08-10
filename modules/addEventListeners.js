@@ -23,6 +23,22 @@ export const addInitLikesListeners = () => {
     })
 }
 
+export const addInitQuoteListeners = (()=>{
+    const commentClickedEl = document.querySelectorAll('.comment');
+
+    commentClickedEl.forEach((commentclicked) => {
+      commentclicked.addEventListener('click', () => {
+        const name = commentclicked.querySelector('.comment-header__name').dataset.name
+        const text = commentclicked.querySelector('.comment-text').dataset.text
+
+        const commentName = comments[name]; 
+        const commentText = comments[text]; 
+        const quote = `Ответ на комментарий "${commentText.text}" от ${commentName.name}: \n`;
+        fieldTextEl.value = quote;
+        })
+      })
+  })
+
 export const clickOnFieldName = () => {
     fieldNameEl.addEventListener('input', () => {
         fieldNameEl.classList.add('border-color')
