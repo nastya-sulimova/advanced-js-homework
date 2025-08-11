@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="conteiner">
+
+    </div>
+    <button id="button">Добавить квадрат</button>
+
+    <style>
+        .square{
+            background-color: grey;
+            width: 50px;
+            height: 50px;
+            margin-bottom: 20px;
+        }
+        .back-color{
+            background-color: green;
+        }
+    </style>
+
+
+    <script>
+        const conteinerEl = document.getElementById('conteiner');
+        const buttonEl = document.getElementById('button');
+
+        // function addSquare() {
+        //     buttonEl.addEventListener('click', ()=>{
+
+        //     conteinerEl.innerHTML = `
+        //     <div class='square'></div>
+        //     `;
+        //     })
+        // }
+        // addSquare();
+
+        // buttonEl.addEventListener('click', ()=>{
+
+        //     conteinerEl.innerHTML = `
+        //     <div class='square'></div>
+        //     `;
+        // })
+
+        buttonEl.addEventListener('click', ()=>{
+            const conteinerWithSquare = document.createElement('div');
+            conteinerWithSquare.innerHTML = `
+                <div class='square'></div>`;
+
+            conteinerEl.appendChild(conteinerWithSquare);
+
+            conteinerWithSquare.addEventListener('click', (event)=>{
+                event.stopPropagation();
+                // conteinerWithSquare.innerHTML = `
+                // <div class='square back-color'></div>`;
+                function getRandomColor() {
+                var letters = '0123456789ABCDEF';
+                var color = '#';
+                for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+                }
+                return color;
+                }
+
+                conteinerWithSquare.innerHTML = `
+                <div class='square' style='background-color: ${getRandomColor()}';></div>`;
+            })
+
+            
+        })
+
+        conteinerEl.addEventListener('click', ()=>{
+            console.log('Клик по контейнеру');
+        })
+
+
+
+        // function getRandomColor() {
+        // var letters = '0123456789ABCDEF';
+        // var color = '#';
+        // for (var i = 0; i < 6; i++) {
+        // color += letters[Math.floor(Math.random() * 16)];
+        // }
+        // return color;
+        // }
+    </script>
+</body>
+</html>
