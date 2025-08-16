@@ -4,6 +4,7 @@ import { addButtonEl } from './constants.js'
 import { comments } from './comments.js'
 import { renderComments } from './renderComments.js'
 import { protectData } from './protectData.js'
+import { updateComments } from './comments.js'
 
 export const addInitLikesListeners = () => {
     const likeButtonsEl = document.querySelectorAll('.like-button')
@@ -15,8 +16,8 @@ export const addInitLikesListeners = () => {
             comments[index].isLiked = !comments[index].isLiked
 
             comments[index].isLiked
-                ? comments[index].counter++
-                : comments[index].counter--
+                ? comments[index].likes++
+                : comments[index].likes--
 
             renderComments(comments)
         })
@@ -33,7 +34,7 @@ export const addInitQuoteListeners = (()=>{
 
         const commentName = comments[name]; 
         const commentText = comments[text]; 
-        const quote = `Ответ на комментарий "${commentText.text}" от ${commentName.name}: \n`;
+        const quote = `Ответ на комментарий "${commentText.text}" от ${commentName.author.name}: \n`;
         fieldTextEl.value = quote;
         })
       })
@@ -69,17 +70,35 @@ export const addButton = () => {
         const hours = String(date.getHours()).padStart(2, '0')
         const minutes = String(date.getMinutes()).padStart(2, '0')
 
-        const newReview = {
-            name: `${protectData(fieldNameEl.value)}`,
-            date: `${day}.${month}.${year} ${hours}:${minutes}`,
-            text: `${protectData(fieldTextEl.value)}`,
-            counter: 0,
-            isLiked: false,
+        // const newReview = {
+        //     author: {
+        //         name: `${protectData(fieldNameEl.value)}`
+        //     },
+        //     date: `${day}.${month}.${year} ${hours}:${minutes}`,
+        //     text: `${protectData(fieldTextEl.value)}`,
+        //     likes: 0,
+        //     isLiked: false,
+        // }
+
+
+        const newReview = { 
+            text: `${protectData(fieldTextEl.value)}`, 
+            name: `${protectData(fieldNameEl.value)}` 
         }
 
-        comments.push(newReview)
+        fetch('https://wedev-api.sky.pro/api/v1/nastya-sulimova/comments',{
+            method: 'POST',
+            body: JSON.stringify(newReview),
+        }).then((response) => {
+            return response.json()
+        }).then((data) =>{
+            updateComments(data.comments)
+            renderComments()
+        })
 
-        renderComments(comments)
+        // comments.push(newReview)
+
+        // renderComments(comments)
 
         fieldNameEl.classList.remove('border-color')
         fieldTextEl.classList.remove('border-color')
