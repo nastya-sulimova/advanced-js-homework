@@ -70,17 +70,6 @@ export const addButton = () => {
         const hours = String(date.getHours()).padStart(2, '0')
         const minutes = String(date.getMinutes()).padStart(2, '0')
 
-        // const newReview = {
-        //     author: {
-        //         name: `${protectData(fieldNameEl.value)}`
-        //     },
-        //     date: `${day}.${month}.${year} ${hours}:${minutes}`,
-        //     text: `${protectData(fieldTextEl.value)}`,
-        //     likes: 0,
-        //     isLiked: false,
-        // }
-
-
         const newReview = { 
             text: `${protectData(fieldTextEl.value)}`, 
             name: `${protectData(fieldNameEl.value)}` 
@@ -89,16 +78,14 @@ export const addButton = () => {
         fetch('https://wedev-api.sky.pro/api/v1/nastya-sulimova/comments',{
             method: 'POST',
             body: JSON.stringify(newReview),
-        }).then((response) => {
-            return response.json()
-        }).then((data) =>{
-            updateComments(data.comments)
-            renderComments()
+        }).then(() => {
+            return fetch('https://wedev-api.sky.pro/api/v1/nastya-sulimova/comments');
         })
-
-        // comments.push(newReview)
-
-        // renderComments(comments)
+        .then((response) => response.json())
+        .then((data) => {
+            updateComments(data.comments);
+            renderComments(data.comments);
+        })
 
         fieldNameEl.classList.remove('border-color')
         fieldTextEl.classList.remove('border-color')
