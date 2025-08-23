@@ -4,8 +4,10 @@ import { addButtonEl } from './constants.js'
 import { comments } from './comments.js'
 import { renderComments } from './renderComments.js'
 import { protectData } from './protectData.js'
-import { updateComments } from './comments.js'
 import { formatDate } from './renderComments.js'
+import { fetchAndRender } from './fetchAndRender.js'
+import { addFormEl } from './constants.js'
+import { addFormLoader } from './constants.js'
 
 export const addInitLikesListeners = () => {
     const likeButtonsEl = document.querySelectorAll('.like-button')
@@ -69,21 +71,22 @@ export const addButton = () => {
             name: `${protectData(fieldNameEl.value)}` 
         }
 
+        addFormEl.style.display = 'none';
+        addFormLoader.style.display = 'block';
+
         fetch('https://wedev-api.sky.pro/api/v1/nastya-sulimova/comments',{
             method: 'POST',
             body: JSON.stringify(newReview),
-        }).then(() => {
-            return fetch('https://wedev-api.sky.pro/api/v1/nastya-sulimova/comments');
         })
-        .then((response) => response.json())
-        .then((data) => {
-            updateComments(data.comments);
-
+        .then(() => {
             comments.forEach(comment => {
                 comment.formattedDate = formatDate(comment.date);
             });
-            
-            renderComments(data.comments);
+            return fetchAndRender();
+        })
+        .then(()=>{
+            addFormEl.style.display = '';
+            addFormLoader.style.display = 'none';
         })
 
         fieldNameEl.classList.remove('border-color')
