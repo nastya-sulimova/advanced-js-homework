@@ -74,10 +74,26 @@ export const addButton = () => {
         addFormEl.style.display = 'none';
         addFormLoader.style.display = 'block';
 
+        if (newReview.text.length < 3 || newReview.name.length < 3){
+            alert('Имя и комментарий должны быть не короче 3 символов')
+            addFormEl.style.display = '';
+            addFormLoader.style.display = 'none';
+            return
+        }
+
         fetch('https://wedev-api.sky.pro/api/v1/nastya-sulimova/comments',{
             method: 'POST',
             body: JSON.stringify(newReview),
         })
+        .then((response)=>{
+            if (response.status === 500){
+               throw new Error('Сервер сломался, попробуй позже');
+            }
+            if (response.status === 400){
+                throw new Error('Ошибка в запросе, попробуй еще раз');
+            }
+           return response.json()
+       })
         .then(() => {
             comments.forEach(comment => {
                 comment.formattedDate = formatDate(comment.date);
@@ -85,13 +101,53 @@ export const addButton = () => {
             return fetchAndRender();
         })
         .then(()=>{
+            fieldNameEl.classList.remove('border-color')
+            fieldTextEl.classList.remove('border-color')
+            fieldNameEl.value = ''
+            fieldTextEl.value = ''
+        })
+        .then(()=>{
             addFormEl.style.display = '';
             addFormLoader.style.display = 'none';
         })
+        .catch((error)=>{
+            if (error.message === 'Сервер сломался, попробуй позже') {
+                alert('Сервер сломался, попробуй позже')
+                addFormEl.style.display = '';
+                addFormLoader.style.display = 'none';
+            } 
+            if (error.message === 'Ошибка в запросе, поробуй еще раз') {
+                alert('Ошибка в запросе, попробуй еще раз')
+                addFormEl.style.display = '';
+                addFormLoader.style.display = 'none';
+            } 
+            if (error instanceof TypeError) {
+                alert('Кажется, у вас сломался интернет, попробуйте позже');
+                addFormEl.style.display = '';
+                addFormLoader.style.display = 'none';
+            }
+        })
 
-        fieldNameEl.classList.remove('border-color')
-        fieldTextEl.classList.remove('border-color')
-        fieldNameEl.value = ''
-        fieldTextEl.value = ''
+        function postComment(newReview) {
+            return fetch('https://wedev-api.sky.pro/api/v1/nastya-sulimova/comments', {
+              method: 'POST',
+              body: JSON.stringify({ newReview, forceError: true })
+            })
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Ошибка сервера');
+              }
+              return response.json();
+            })
+            .catch(error => {
+              if (error.message === 'Ошибка сервера') {
+                setTimeout(() => postComment(newReview), 1000); 
+              } else {
+                alert(error.message);
+              }
+            });
+          }
+
+          postComment(newReview)
     })
 }
