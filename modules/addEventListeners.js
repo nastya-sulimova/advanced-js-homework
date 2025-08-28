@@ -116,7 +116,7 @@ export const addButton = () => {
                 addFormEl.style.display = '';
                 addFormLoader.style.display = 'none';
             } 
-            if (error.message === 'Ошибка в запросе, поробуй еще раз') {
+            if (error.message === 'Ошибка в запросе, попробуй еще раз') {
                 alert('Ошибка в запросе, попробуй еще раз')
                 addFormEl.style.display = '';
                 addFormLoader.style.display = 'none';
@@ -127,27 +127,5 @@ export const addButton = () => {
                 addFormLoader.style.display = 'none';
             }
         })
-
-        function postComment(newReview) {
-            return fetch('https://wedev-api.sky.pro/api/v1/nastya-sulimova/comments', {
-              method: 'POST',
-              body: JSON.stringify({ newReview, forceError: true })
-            })
-            .then(response => {
-              if (!response.ok) {
-                throw new Error('Ошибка сервера');
-              }
-              return response.json();
-            })
-            .catch(error => {
-              if (error.message === 'Ошибка сервера') {
-                setTimeout(() => postComment(newReview), 1000); 
-              } else {
-                alert(error.message);
-              }
-            });
-          }
-
-          postComment(newReview)
     })
 }
