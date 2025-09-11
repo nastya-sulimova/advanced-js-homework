@@ -8,6 +8,8 @@ import { formatDate } from './renderComments.js'
 import { fetchAndRender } from './fetchAndRender.js'
 import { addFormEl } from './constants.js'
 import { addFormLoader } from './constants.js'
+import { postComment } from './api.js'
+import { renderLogin } from './renderLogin.js'
 
 export const addInitLikesListeners = () => {
     const likeButtonsEl = document.querySelectorAll('.like-button')
@@ -81,10 +83,7 @@ export const addButton = () => {
             return
         }
 
-        fetch('https://wedev-api.sky.pro/api/v1/nastya-sulimova/comments',{
-            method: 'POST',
-            body: JSON.stringify(newReview),
-        })
+        postComment()
         .then((response)=>{
             if (response.status === 500){
                throw new Error('Сервер сломался, попробуй позже');
@@ -92,7 +91,8 @@ export const addButton = () => {
             if (response.status === 400){
                 throw new Error('Ошибка в запросе, попробуй еще раз');
             }
-           return response.json()
+        //    return response.json()
+           return response
        })
         .then(() => {
             comments.forEach(comment => {
@@ -129,3 +129,14 @@ export const addButton = () => {
         })
     })
 }
+
+const regElement = document.getElementById('reg-button')
+regElement.addEventListener('click', ()=>{
+    const regTextEl = document.querySelector('.reg-text')
+    const addFormEl = document.querySelector('.add-form')
+
+    regTextEl.style.display = 'none'
+    addFormEl.style.display = 'none'
+    renderLogin()
+    
+})

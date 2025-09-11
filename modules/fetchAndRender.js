@@ -1,13 +1,14 @@
+import { getComments } from "./api.js";
 import { updateComments } from "./comments.js"
 import { renderComments } from "./renderComments.js"
 
 export const fetchAndRender = () => {
-    return fetch('https://wedev-api.sky.pro/api/v1/nastya-sulimova/comments')
+    return getComments()
     .then((response)=>{
         if (response.status === 500){
            throw new Error('Сервер сломался, попробуй позже');
        }
-       return response.json()
+       return response
    })
     .then((data) =>{
         updateComments(data.comments)
