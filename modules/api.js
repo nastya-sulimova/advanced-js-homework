@@ -1,6 +1,7 @@
 const host = 'https://wedev-api.sky.pro/api/v2/nastya-sulimova/comments'
 
-let token = 'ksdfsksdfjfsdjk'
+// let token = 'ksdfsksdfjfsdjk'
+let token = ''
 
 export const updateToken = (newToken) => {
     token = newToken
@@ -30,13 +31,13 @@ export function deleteComment({ id }) {
     })
 }
 
-export function postComment(text) {
+export function postComment({text}) {
     return fetch(host, {
         method: 'POST',
         headers: {
             Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(text),
+        body: JSON.stringify({text}),
     }).then((response) => {
         return response.json()
     })
@@ -48,7 +49,7 @@ export function login({ login, password }) {
         body: JSON.stringify({ login, password }),
     }).then((response) => {
         if (response.status === 400) {
-            throw new Error('вы ввели что-то не то')
+            throw new Error('вы ввели неверный логин или пароль, попробуйте еще раз')
         }
         return response.json()
     })

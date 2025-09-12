@@ -13,6 +13,10 @@ export const fetchAndRender = () => {
     .then((data) =>{
         updateComments(data.comments)
         renderComments()
+
+    // const addFormEl = document.querySelector('.add-form')
+
+    // addFormEl.style.display = 'none'
     }) 
     .catch((error)=>{
         alert(error.message)

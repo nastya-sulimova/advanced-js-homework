@@ -3,7 +3,6 @@ import { fetchAndRender } from './fetchAndRender.js'
 // import { renderRegistration } from './renderRegistration.js'
 
 export const renderLogin = () => {
-    // const container = document.querySelector('.container')
     const listEl = document.querySelector('.comments')
 
     listEl.innerHTML = `
@@ -22,7 +21,7 @@ export const renderLogin = () => {
     const button = document.getElementById('login-button')
     const loginElement = document.getElementById('login-input')
     const passwordElement = document.getElementById('password-input')
-    // const regElement = document.getElementById('reg-button')
+    const regElement = document.getElementById('reg-button')
 
     button.addEventListener('click', () => {
         login({
@@ -34,8 +33,7 @@ export const renderLogin = () => {
                 fetchAndRender()
             })
             .catch((error) => {
-                console.error('Произошла ошибка:', error)
-                // Дополнительная обработка ошибок
+                alert(error)
             })
 
             const regTextEl = document.querySelector('.reg-text')
@@ -44,5 +42,7 @@ export const renderLogin = () => {
             regTextEl.style.display = ''
             addFormEl.style.display = ''
     })
+
+        // regElement.addEventListener('click', renderRegistration)
 
 }

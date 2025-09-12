@@ -83,7 +83,7 @@ export const addButton = () => {
             return
         }
 
-        postComment()
+        postComment({text: `${protectData(fieldTextEl.value)}`})
         .then((response)=>{
             if (response.status === 500){
                throw new Error('Сервер сломался, попробуй позже');
