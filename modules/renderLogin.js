@@ -1,11 +1,11 @@
-import { login, updateToken } from './api.js'
+import { login, updateName, updateToken } from './api.js'
 import { fetchAndRender } from './fetchAndRender.js'
-// import { renderRegistration } from './renderRegistration.js'
+import { renderRegistration } from './renderRegistration.js'
 
 export const renderLogin = () => {
-    const listEl = document.querySelector('.comments')
+    const container = document.querySelector('.container')
 
-    listEl.innerHTML = `
+    container.innerHTML = `
         <h1>Страница входа</h1>
         <div class="form">
         <h3 class="form-title">Форма входа</h3>
@@ -30,19 +30,14 @@ export const renderLogin = () => {
         })
             .then((responseData) => {
                 updateToken(responseData.user.token)
+                updateName(responseData.user.name)
                 fetchAndRender()
             })
             .catch((error) => {
                 alert(error)
             })
-
-            const regTextEl = document.querySelector('.reg-text')
-            const addFormEl = document.querySelector('.add-form')
-
-            regTextEl.style.display = ''
-            addFormEl.style.display = ''
     })
 
-        // regElement.addEventListener('click', renderRegistration)
+        regElement.addEventListener('click', renderRegistration)
 
 }

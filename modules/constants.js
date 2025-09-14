@@ -1,4 +1,4 @@
-export const listEl = document.querySelector('.comments')
+export const containerEl = document.querySelector('.container')
 
 export const fieldNameEl = document.querySelector('.add-form-name')
 export const fieldTextEl = document.querySelector('.add-form-text')

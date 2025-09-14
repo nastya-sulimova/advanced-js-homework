@@ -1,10 +1,15 @@
 const host = 'https://wedev-api.sky.pro/api/v2/nastya-sulimova/comments'
 
-// let token = 'ksdfsksdfjfsdjk'
-let token = ''
+export let token = ''
 
 export const updateToken = (newToken) => {
     token = newToken
+}
+
+export let name = ''
+
+export const updateName = (newName) => {
+    name = newName
 }
 
 const authToken = 'https://wedev-api.sky.pro/api/user'
@@ -12,9 +17,9 @@ const authToken = 'https://wedev-api.sky.pro/api/user'
 export function getComments() {
     return fetch(host, {
         method: 'GET',
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
+        // headers: {
+        //     Authorization: `Bearer ${token}`,
+        // },
     }).then((response) => {
         return response.json()
     })

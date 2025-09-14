@@ -129,14 +129,3 @@ export const addButton = () => {
         })
     })
 }
-
-const regElement = document.getElementById('reg-button')
-regElement.addEventListener('click', ()=>{
-    const regTextEl = document.querySelector('.reg-text')
-    const addFormEl = document.querySelector('.add-form')
-
-    regTextEl.style.display = 'none'
-    addFormEl.style.display = 'none'
-    renderLogin()
-    
-})

@@ -2,7 +2,7 @@ import { registration } from './api.js'
 import { renderLogin } from './renderLogin.js'
 
 export const renderRegistration = () => {
-    const listEl = document.querySelector('.comments')
+    const listEl = document.querySelector('.container')
 
     listEl.innerHTML = `
         <h1>Страница регистрации</h1>
@@ -35,11 +35,5 @@ export const renderRegistration = () => {
             .catch((error) => {
                 console.error('Произошла ошибка:', error)
             })
-
-            const regTextEl = document.querySelector('.reg-text')
-            const addFormEl = document.querySelector('.add-form')
-
-            regTextEl.style.display = ''
-            addFormEl.style.display = ''
     })
 }

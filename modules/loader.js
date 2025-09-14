@@ -1,3 +1,3 @@
-const listEl = document.querySelector('.comments')
+const container = document.querySelector('.container')
 
-listEl.innerHTML = '<p>Пожалуйста, подождите, комментарии загружаются...</p>'
+container.innerHTML = '<p>Пожалуйста, подождите, комментарии загружаются...</p>'
