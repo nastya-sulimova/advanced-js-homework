@@ -80,7 +80,7 @@ export const renderComments = () => {
 
       <p class="add-form-loader">Комментарий добавляется...</p>
     `
-    const linkToLoginText = `<p class="reg-text">Для добавления комментария необходимо <button id="auth-button">авторизоваться</button></p>`
+    const linkToLoginText = `<p class="reg-text">Для добавления комментария необходимо <button class="auth-button" id="auth-button">авторизоваться</button></p>`
 
     const baseHtml = `<ul class="comments">${commentsHtml}</ul>
     ${token? addCommentsHtml : linkToLoginText}

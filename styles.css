@@ -22,7 +22,8 @@ body {
   }
 
   .comment,
-  .add-form {
+  .add-form,
+  .form {
     width: 596px;
     box-sizing: border-box;
     background: radial-gradient(
@@ -138,4 +139,39 @@ body {
 
   .add-form-loader {
     display: none;
+  }
+
+  /* страницы логина и регистрации */
+  .buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+  }
+
+  .button,
+  .auth-button {
+    margin-top: 15px;
+    font-size: 15px;
+    padding: 10px 20px;
+    background-color: #bcec30;
+    border: none;
+    border-radius: 18px;
+    cursor: pointer;
+  }
+
+  .form {
+    padding: 30px;
+  }
+
+  .form-row {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .input {
+    height: 25px;
+    border-radius: 10px;
+    padding-left: 10px;
   }

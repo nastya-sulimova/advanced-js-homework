@@ -14,8 +14,10 @@ export const renderLogin = () => {
             <input type="text" id="password-input" class="input" placeholder="Пароль">
         </div>
         <br>
-        <button class="button" id="login-button">Войти</button>
-        <button class="button" id="reg-button">Зарегистрироваться</button>
+        <div class="buttons">
+            <button class="button" id="login-button">Войти</button>
+            <button class="button" id="reg-button">Зарегистрироваться</button>
+        </div>
         </div>
     `
     const button = document.getElementById('login-button')
