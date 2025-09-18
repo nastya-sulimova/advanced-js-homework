@@ -1,13 +1,9 @@
-import { fieldNameEl } from './constants.js'
-import { fieldTextEl } from './constants.js'
-import { addButtonEl } from './constants.js'
 import { comments } from './comments.js'
 import { renderComments } from './renderComments.js'
 import { protectData } from './protectData.js'
 import { formatDate } from './renderComments.js'
 import { fetchAndRender } from './fetchAndRender.js'
-import { addFormEl } from './constants.js'
-import { addFormLoader } from './constants.js'
+import { postComment } from './api.js'
 
 export const addInitLikesListeners = () => {
     const likeButtonsEl = document.querySelectorAll('.like-button')
@@ -34,6 +30,7 @@ export const addInitQuoteListeners = (()=>{
       commentclicked.addEventListener('click', () => {
         const name = commentclicked.querySelector('.comment-header__name').dataset.name
         const text = commentclicked.querySelector('.comment-text').dataset.text
+        const fieldTextEl = document.querySelector('.add-form-text')
 
         const commentName = comments[name]; 
         const commentText = comments[text]; 
@@ -44,18 +41,28 @@ export const addInitQuoteListeners = (()=>{
   })
 
 export const clickOnFieldName = () => {
+    const fieldNameEl = document.querySelector('.add-form-name')
+
     fieldNameEl.addEventListener('input', () => {
         fieldNameEl.classList.add('border-color')
     })
 }
 
 export const clickOnFieldText = () => {
+    const fieldTextEl = document.querySelector('.add-form-text')
+
     fieldTextEl.addEventListener('input', () => {
         fieldTextEl.classList.add('border-color')
     })
 }
 
 export const addButton = () => {
+    const addButtonEl = document.querySelector('.add-form-button')
+    const addFormEl = document.querySelector('.add-form')
+    const addFormLoader = document.querySelector('.add-form-loader')
+    const fieldNameEl = document.querySelector('.add-form-name')
+    const fieldTextEl = document.querySelector('.add-form-text')
+
     addButtonEl.addEventListener('click', () => {
         if (fieldNameEl.value === '' || fieldTextEl.value === '') {
             fieldNameEl.classList.add('error') ||
@@ -81,10 +88,7 @@ export const addButton = () => {
             return
         }
 
-        fetch('https://wedev-api.sky.pro/api/v1/nastya-sulimova/comments',{
-            method: 'POST',
-            body: JSON.stringify(newReview),
-        })
+        postComment({text: `${protectData(fieldTextEl.value)}`})
         .then((response)=>{
             if (response.status === 500){
                throw new Error('Сервер сломался, попробуй позже');
@@ -92,7 +96,7 @@ export const addButton = () => {
             if (response.status === 400){
                 throw new Error('Ошибка в запросе, попробуй еще раз');
             }
-           return response.json()
+           return response
        })
         .then(() => {
             comments.forEach(comment => {
